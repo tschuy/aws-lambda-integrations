@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'openssl'
 require 'json/jwt'
 rsa_private = OpenSSL::PKey::RSA.generate 4096
