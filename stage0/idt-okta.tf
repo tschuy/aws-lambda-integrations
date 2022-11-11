@@ -1,4 +1,13 @@
 # Configure the Okta Provider
+terraform {
+  required_providers {
+    okta = {
+      source = "okta/okta"
+      version = "~> 3.38"
+    }
+  }
+}
+
 provider "okta" {
   org_name  = var.okta_prefix
   base_url  = "okta.com"
@@ -30,4 +39,16 @@ resource "okta_app_oauth_api_scope" "indent-scopes" {
 output "idt-okta-okta-app-oauth-client-id" {
   value       = okta_app_oauth.indent.id
   description = "oauth client id of application"
+}
+
+output "idt-okta-jwk-n" {
+  value       = var.okta_jwk_n
+  description = "n-value of Okta JWK"
+  sensitive   = true
+}
+
+output "idt-okta-private-key" {
+  value       = var.okta_private_key
+  description = "Private key PEM of Okta service app"
+  sensitive   = true
 }

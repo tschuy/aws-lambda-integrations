@@ -1,8 +1,3 @@
-variable "okta_indent_webhook_secret" {
-  type      = string
-  sensitive = true
-}
-
 variable "okta_prefix" {
   type      = string
   default   = ""
@@ -22,7 +17,7 @@ variable "okta_private_key" {
   sensitive = true
 }
 
-variable "okta_slack_app_id" {
+variable "okta_token" {
   type      = string
   default   = ""
   sensitive = true

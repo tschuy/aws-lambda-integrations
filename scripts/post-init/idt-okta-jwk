@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+require 'openssl'
+require 'json'
+require 'json/jwt'
+
+# we only need to build the JWK/private key on stage0
+if File.basename(Dir.getwd) == 'stage1'
+    exit 0
+end
+
+output=`terraform output -json idt-okta-private-key` ;  success=$?.success?
+
+if success
+    puts "Retrieved private key from Terraform state"
+    rsa_private = OpenSSL::PKey::RSA.new(JSON.parse(output)['idt-okta-private-key'])
+else
+    puts "Generating new private key"
+    rsa_private = OpenSSL::PKey::RSA.generate 4096
+end
+
+File.write(
+    './idt-okta.tfvars',
+    "okta_private_key = <<-EOT\n%sEOT\n" % rsa_private.to_pem,
+    mode: 'w'
+)
+
+File.write(
+    './idt-okta.tfvars',
+    "okta_jwk_n = \"%s\"\n" % rsa_private.public_key.to_jwk["n"],
+    mode: 'a'
+)

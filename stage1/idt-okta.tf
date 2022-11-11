@@ -16,8 +16,8 @@ module "idt-okta-webhook" {
   env = {
     OKTA_DOMAIN       = "${var.okta_prefix}.okta.com"
     OKTA_SLACK_APP_ID = var.okta_slack_app_id
-    OKTA_CLIENT_ID    = data.terraform_remote_state.stage1.outputs.idt-okta-okta-app-oauth-client-id
-    OKTA_PRIVATE_KEY  = file("./private.pem")
+    OKTA_CLIENT_ID    = data.terraform_remote_state.stage0.outputs.idt-okta-okta-app-oauth-client-id
+    OKTA_PRIVATE_KEY  = data.terraform_remote_state.stage0.outputs.idt-okta-private-key
   }
 }
 
